@@ -13,7 +13,7 @@ A modern, full-stack blogging platform built with Next.js 15, tRPC, PostgreSQL, 
 
 ## Deployed Link
 
-hh-bloggy.vercel.app
+[hh-bloggy.vercel.app](https://hh-bloggy.vercel.app)
 
 ## 🎯 Implemented Features
 
