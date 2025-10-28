@@ -1,8 +1,11 @@
 import { initTRPC } from '@trpc/server';
+import superjson from 'superjson';
 import { z } from 'zod';
 
-// Initialize tRPC
-const t = initTRPC.create();
+// Initialize tRPC with transformer
+const t = initTRPC.create({
+  transformer: superjson,
+});
 
 // Base router and procedure helpers
 export const router = t.router;
