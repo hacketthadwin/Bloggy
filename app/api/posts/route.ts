@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/db';
-import { posts } from '@/db/schema';
-import { postsRelations } from '@/db/schema';
+import { posts, categories, postCategories } from '@/db/schema';
+import { eq } from 'drizzle-orm';
+import { generateSlug } from '@/utils/slug';
 import { v2 as cloudinary } from 'cloudinary';
 
 cloudinary.config({ cloudinary_url: process.env.CLOUDINARY_URL });
@@ -45,15 +46,50 @@ export async function POST(req: Request) {
     // Generate slug from title
     const slug = slugify(title);
 
-    // Insert into database using Drizzle
+    // Insert into database using Drizzle (posts table doesn't have `category` column)
     const [newPost] = await db.insert(posts).values({
       title,
-      slug, // <-- add slug here
+      slug,
       content,
-      category,
       featuredImage: imageUrl,
       published,
     }).returning();
+
+    // Handle categories: support comma-separated list, ids or slugs/names
+    if (category) {
+      const cats = category.split(',').map((c) => c.trim()).filter(Boolean);
+      for (const c of cats) {
+        let foundCat = null;
+
+        // If looks like a UUID, try by id
+        const uuidRegex = /^[0-9a-fA-F-]{36}$/;
+        if (uuidRegex.test(c)) {
+          foundCat = await db.query.categories.findFirst({ where: eq(categories.id, c) });
+        }
+
+        // Try by slug
+        if (!foundCat) {
+          foundCat = await db.query.categories.findFirst({ where: eq(categories.slug, c) });
+        }
+
+        // Try by name
+        if (!foundCat) {
+          foundCat = await db.query.categories.findFirst({ where: eq(categories.name, c) });
+        }
+
+        // Create category if not found
+        if (!foundCat) {
+          const slugForCat = generateSlug(c);
+          const [created] = await db.insert(categories).values({ name: c, slug: slugForCat }).returning();
+          foundCat = created;
+        }
+
+        // Create post-category relationship
+        if (foundCat && newPost?.id) {
+          await db.insert(postCategories).values({ postId: newPost.id, categoryId: foundCat.id });
+        }
+      }
+    }
 
     return NextResponse.json(newPost);
   } catch (err) {
