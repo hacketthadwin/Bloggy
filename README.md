@@ -4,13 +4,6 @@ A modern, full-stack blogging platform built with Next.js 15, tRPC, PostgreSQL, 
 
 ## 📝 Project Overview
 
-### Time Spent
-- Setup & Infrastructure: ~1 day
-- Core Features (Priority 1): ~1 days
-- Extended Features (Priority 2): ~1 days
-- Polish & Bonus Features (Priority 3): ~2 day
-- Total: ~5 days
-
 ## Deployed Link
 
 [hh-bloggy.vercel.app](https://hh-bloggy.vercel.app)
@@ -528,5 +521,11 @@ npm run deploy:staging  # Deploy to staging
    - `DATABASE_URL`
    - `CLOUDINARY_URL`
 
+### Time Spent
+- Setup & Infrastructure: ~1 day
+- Core Features (Priority 1): ~1 days
+- Extended Features (Priority 2): ~1 days
+- Polish & Bonus Features (Priority 3): ~2 day
+- Total: ~5 days
 
 Built with Next.js, tRPC, and PostgreSQL. See `package.json` for all dependencies.
