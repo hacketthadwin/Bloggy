@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1761486253800,
+      "tag": "0000_real_archangel",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1761488141637,
+      "tag": "0001_far_blue_blade",
+      "breakpoints": true
+    }
+  ]
+}
